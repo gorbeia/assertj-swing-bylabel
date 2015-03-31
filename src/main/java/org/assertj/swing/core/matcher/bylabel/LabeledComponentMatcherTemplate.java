@@ -17,7 +17,6 @@ package org.assertj.swing.core.matcher.bylabel;
 
 import java.awt.Component;
 import java.util.regex.Pattern;
-import javax.annotation.Nonnull;
 import javax.swing.JLabel;
 import org.assertj.swing.core.matcher.JLabelMatcher;
 import org.assertj.swing.core.matcher.NamedComponentMatcherTemplate;
@@ -28,9 +27,9 @@ import org.assertj.swing.core.matcher.NamedComponentMatcherTemplate;
  */
 public abstract class LabeledComponentMatcherTemplate<T extends Component> extends NamedComponentMatcherTemplate<T> {
 
-    JLabelMatcher labelMatcher;
-    protected Object labelText;
-    protected Object labelName;
+    private JLabelMatcher labelMatcher;
+    private Object labelText;
+    private Object labelName;
 
     protected LabeledComponentMatcherTemplate(Class<T> supportedType, Object name) {
         super(supportedType, name);
@@ -55,7 +54,7 @@ public abstract class LabeledComponentMatcherTemplate<T extends Component> exten
         }
     }
 
-    protected abstract boolean isExtendedMatching(T Component);
+    protected abstract boolean isExtendedMatching(T component);
 
     private boolean isMatchingByLabel(T component) {
         if (component.getParent() == null) {
@@ -71,16 +70,12 @@ public abstract class LabeledComponentMatcherTemplate<T extends Component> exten
                 }
                 labelFound = false;
             }
-            if (c instanceof JLabel) {
-                if (labelMatcher.matches(c)) {
-                    Component labelFor = ((JLabel) c).getLabelFor();
-                    if (labelFor != null) {
-                        if (this.supportedType().isInstance(labelFor) && labelFor.equals(component)) {
-                            return true;
-                        }
-                    } else {
-                        labelFound = true;
-                    }
+            if (c instanceof JLabel && labelMatcher.matches(c)) {
+                Component labelFor = ((JLabel) c).getLabelFor();
+                if (labelFor != null) {
+                    return labelFor.equals(component);
+                } else {
+                    labelFound = true;
                 }
             }
         }
@@ -102,5 +97,13 @@ public abstract class LabeledComponentMatcherTemplate<T extends Component> exten
         } else if (labelText instanceof Pattern) {
             labelMatcher.andText((Pattern) labelText);
         }
+    }
+
+    public Object quotedLabelName() {
+        return quoted(labelName);
+    }
+
+    public Object quotedLabelText() {
+        return quoted(labelText);
     }
 }

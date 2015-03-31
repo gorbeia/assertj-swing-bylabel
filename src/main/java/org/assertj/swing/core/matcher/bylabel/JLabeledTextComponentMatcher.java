@@ -266,6 +266,6 @@ public final class JLabeledTextComponentMatcher extends LabeledComponentMatcherT
     @Override
     public String toString() {
         String format = "%s[name=%s, text=%s, labelName=%s, labelText=%s, requireShowing=%b]";
-        return String.format(format, getClass().getName(), quotedName(), quoted(text), quoted(labelName), quoted(labelText), requireShowing());
+        return String.format(format, getClass().getName(), quotedName(), quoted(text), quotedLabelName(), quotedLabelText(), requireShowing());
     }
 }
