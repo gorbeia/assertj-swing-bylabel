@@ -48,7 +48,6 @@
                         <artifactId>maven-surefire-plugin</artifactId><!-- Minimal supported version is 2.4 -->
                         <version>2.18</version>
                         <configuration>
-                            <argLine>-XX:-UseSplitVerifier</argLine>
                             <properties>
                                 <property>
                                     <name>listener</name>
